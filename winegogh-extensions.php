@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Winegogh Extensions
-Description: A plugin to modify WooCommerce product prices for Elementor.
+Description: A plugin to help develop Winegogh
 Version: 1.0.0
-Author: Your Name
-GitHub Plugin URI: https://github.com/yourusername/winegogh-extensions
+Author: Gui Rodrigues
+GitHub Plugin URI: https://github.com/qruz-hq/winegogh-extensions
 GitHub Branch: main
 */
 
