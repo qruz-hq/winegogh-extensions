@@ -19,7 +19,7 @@ class Winegogh_Extensions {
 
         // Add the currency symbol
         $currency_symbol = get_woocommerce_currency_symbol();
-        $modified_price = $currency_symbol . $formatted_price;
+        $modified_price =  $formatted_price . $currency_symbol;
 
         return $modified_price;
     }
