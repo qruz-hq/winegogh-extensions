@@ -63,7 +63,37 @@ class Winegogh_Elementor_Custom_Meta_Or_Attribute_Widget extends \Elementor\Widg
         );
 
         $this->end_controls_section();
+        // Style tab
+        $this->start_controls_section(
+            'section_style',
+            [
+                'label' => __( 'Style', 'winegogh-extensions' ),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
 
+        $this->add_control(
+            'text_color',
+            [
+                'label' => __( 'Text Color', 'winegogh-extensions' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wg-custom-meta-or-attribute-data' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'typography',
+                'label' => __( 'Typography', 'winegogh-extensions' ),
+                'selector' => '{{WRAPPER}} .wg-custom-meta-or-attribute-data',
+            ]
+        );
+
+        $this->end_controls_section();
+        
         $this->start_controls_section(
             'section_custom_css',
             [
