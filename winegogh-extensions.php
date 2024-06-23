@@ -2,7 +2,7 @@
 /*
 Plugin Name: Winegogh Extensions
 Description: A plugin to modify WooCommerce product prices for Elementor.
-Version: 1.0.0
+Version: 1.0.1
 Author: Your Name
 GitHub Plugin URI: https://github.com/yourusername/winegogh-extensions
 GitHub Branch: main
