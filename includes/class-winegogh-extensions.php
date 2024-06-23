@@ -5,8 +5,21 @@ class Winegogh_Extensions {
     }
 
     public function modify_product_price( $price, $product ) {
-        // Example modification: Append custom text to the price
-        $modified_price = $price . ' <span class="custom-price-text">Custom Text</span>';
+        // Get the regular price
+        $regular_price = $product->get_regular_price();
+
+        // Format the price: show decimals only if needed
+        if ( strpos( $regular_price, '.' ) !== false ) {
+            $formatted_price = number_format( $regular_price, 2, ',', '' );
+            // Remove trailing zeroes after the decimal point
+            $formatted_price = rtrim( rtrim( $formatted_price, '0' ), ',' );
+        } else {
+            $formatted_price = $regular_price;
+        }
+
+        // Add the currency symbol
+        $currency_symbol = get_woocommerce_currency_symbol();
+        $modified_price = $currency_symbol . $formatted_price;
 
         return $modified_price;
     }
