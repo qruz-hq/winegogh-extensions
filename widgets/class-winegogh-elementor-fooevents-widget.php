@@ -83,11 +83,21 @@ class Winegogh_Elementor_FooEvents_Widget extends \Elementor\Widget_Base {
 
         $field_value = $product->get_meta( $field_key );
 
-        echo '<div class="wg-fooevents-data">';
+        $class = $field_value ? '' : ' empty';
+
+        echo '<div class="wg-fooevents-data' . esc_attr( $class ) . '">';
         if ( $field_value ) {
-            echo '<p>' . esc_html( $field_value ) . '</p>';
+            if ( strpos($field_key, 'Date') !== false ) {
+                // Set locale to Spanish
+                setlocale(LC_TIME, 'es_ES.UTF-8');
+                $timestamp = strtotime($field_value);
+                $formatted_date = strftime('%a %d %B', $timestamp);
+                echo  strtoupper($formatted_date) ;
+            } else {
+                echo  esc_html( $field_value );
+            }
         } else {
-            echo '<p>' . __( 'No data available', 'winegogh-extensions' ) . '</p>';
+            echo '';
         }
         echo '</div>';
     }
