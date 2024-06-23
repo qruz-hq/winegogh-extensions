@@ -144,25 +144,25 @@ class Winegogh_Elementor_Custom_Meta_Or_Attribute_Widget extends \Elementor\Widg
                         $month_number = $months[ $month ];
                         $timestamp = mktime( 0, 0, 0, $month_number, $day, $year );
                         $formatted_date = strftime( '%a %d %B', $timestamp );
-                        echo '<p>' . $this->capitalize_date( $formatted_date ) . '</p>';
+                        echo  $this->capitalize_date( $formatted_date );
                     } else {
-                        echo '<p>' . __( 'Invalid month name', 'winegogh-extensions' ) . '</p>';
+                        echo  __( 'Invalid month name', 'winegogh-extensions' );
                     }
                 } else {
                     // Try to parse the standard date format (YYYY-MM-DD)
                     $timestamp = strtotime( $data_value );
                     if ( $timestamp !== false ) {
                         $formatted_date = strftime( '%a %d %B', $timestamp );
-                        echo '<p>' . $this->capitalize_date( $formatted_date ) . '</p>';
+                        echo  $this->capitalize_date( $formatted_date );
                     } else {
-                        echo '<p>' . __( 'Invalid date format', 'winegogh-extensions' ) . '</p>';
+                        echo  __( 'Invalid date format', 'winegogh-extensions' );
                     }
                 }
             } else {
-                echo '<p>' . esc_html( $data_value ) . '</p>';
+                echo  esc_html( $data_value );
             }
         } else {
-            echo '<p>' . __( 'No data available', 'winegogh-extensions' ) . '</p>';
+            echo  __( 'No data available', 'winegogh-extensions' );
         }
         echo '</div>';
     }
