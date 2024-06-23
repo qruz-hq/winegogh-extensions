@@ -20,6 +20,9 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-winegogh-extensions.php
 function register_new_widgets( $widgets_manager ) {
     require_once( __DIR__ . '/widgets/class-winegogh-elementor-price-widget.php' );
     $widgets_manager->register( new \Winegogh_Elementor_Price_Widget() );
+    
+    require_once plugin_dir_path( __FILE__ ) . 'widgets/class-winegogh-elementor-fooevents-widget.php';
+    $widgets_manager->register( new \Winegogh_Elementor_FooEvents_Widget() );
 }
 
 // Register custom category
