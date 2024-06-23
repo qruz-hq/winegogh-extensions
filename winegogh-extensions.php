@@ -2,7 +2,7 @@
 /*
 Plugin Name: Winegogh Extensions
 Description: A plugin to help develop Winegogh
-Version: 1.0.11
+Version: 1.0.12
 Author: Gui Rodrigues
 GitHub Plugin URI: https://github.com/qruz-hq/winegogh-extensions
 GitHub Branch: main
