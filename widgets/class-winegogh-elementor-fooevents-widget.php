@@ -35,13 +35,14 @@ class Winegogh_Elementor_FooEvents_Widget extends \Elementor\Widget_Base {
                 'label' => __( 'FooEvents Field', 'winegogh-extensions' ),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
-                    '_event_date' => __( 'Event Date', 'winegogh-extensions' ),
-                    '_event_location' => __( 'Event Location', 'winegogh-extensions' ),
-                    '_event_start_time' => __( 'Event Start Time', 'winegogh-extensions' ),
-                    '_event_end_time' => __( 'Event End Time', 'winegogh-extensions' ),
+                    'WooCommerceEventsDate' => __( 'Event Date', 'winegogh-extensions' ),
+                    'WooCommerceEventsEndDate' => __( 'Event End Date', 'winegogh-extensions' ),
+                    'WooCommerceEventsStartTime' => __( 'Event Start Time', 'winegogh-extensions' ),
+                    'WooCommerceEventsEndTime' => __( 'Event End Time', 'winegogh-extensions' ),
+                    'WooCommerceEventsLocation' => __( 'Event Location', 'winegogh-extensions' ),
                     // Add more options as needed
                 ],
-                'default' => '_event_date',
+                'default' => 'WooCommerceEventsDate',
             ]
         );
 
@@ -80,7 +81,7 @@ class Winegogh_Elementor_FooEvents_Widget extends \Elementor\Widget_Base {
         $settings = $this->get_settings_for_display();
         $field_key = $settings['fooevents_field'];
 
-        $field_value = get_post_meta( $product->get_id(), $field_key, true );
+        $field_value = $product->get_meta( $field_key );
 
         echo '<div class="wg-fooevents-data">';
         if ( $field_value ) {
