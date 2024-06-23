@@ -88,13 +88,54 @@ class Winegogh_Elementor_FooEvents_Widget extends \Elementor\Widget_Base {
         echo '<div class="wg-fooevents-data' . esc_attr( $class ) . '">';
         if ( $field_value ) {
             if ( strpos($field_key, 'Date') !== false ) {
+                // Debug output
+                // echo '<pre>Debug: ' . print_r($field_value, true) . '</pre>';
+
                 // Set locale to Spanish
                 setlocale(LC_TIME, 'es_ES.UTF-8');
-                $timestamp = strtotime($field_value);
-                $formatted_date = strftime('%a %d %B', $timestamp);
-                echo  strtoupper($formatted_date) ;
+
+                // Try to parse the Spanish date format
+                if (preg_match('/(\d{1,2}) de (\w+) de (\d{4})/', $field_value, $matches)) {
+                    $day = $matches[1];
+                    $month = $matches[2];
+                    $year = $matches[3];
+
+                    // Map Spanish month names to numbers
+                    $months = [
+                        'enero' => 1,
+                        'febrero' => 2,
+                        'marzo' => 3,
+                        'abril' => 4,
+                        'mayo' => 5,
+                        'junio' => 6,
+                        'julio' => 7,
+                        'agosto' => 8,
+                        'septiembre' => 9,
+                        'octubre' => 10,
+                        'noviembre' => 11,
+                        'diciembre' => 12
+                    ];
+
+                    if (isset($months[$month])) {
+                        $month_number = $months[$month];
+                        $timestamp = mktime(0, 0, 0, $month_number, $day, $year);
+                        $formatted_date = strftime('%a %d %B', $timestamp);
+                        echo strtoupper($formatted_date);
+                    } else {
+                        echo  __( 'Invalid month name', 'winegogh-extensions' );
+                    }
+                } else {
+                    // Try to parse the standard date format (YYYY-MM-DD)
+                    $timestamp = strtotime($field_value);
+                    if ($timestamp !== false) {
+                        $formatted_date = strftime('%a %d %B', $timestamp);
+                        echo  strtoupper($formatted_date);
+                    } else {
+                        echo  __( 'Invalid date format', 'winegogh-extensions' );
+                    }
+                }
             } else {
-                echo  esc_html( $field_value );
+                echo esc_html( $field_value );
             }
         } else {
             echo '';

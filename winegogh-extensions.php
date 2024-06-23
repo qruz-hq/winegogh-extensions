@@ -23,6 +23,9 @@ function register_new_widgets( $widgets_manager ) {
 
     require_once plugin_dir_path( __FILE__ ) . 'widgets/class-winegogh-elementor-fooevents-widget.php';
     $widgets_manager->register( new \Winegogh_Elementor_FooEvents_Widget() );
+
+    require_once plugin_dir_path( __FILE__ ) . 'widgets/class-winegogh-elementor-custom-meta-or-attribute-widget.php';
+    $widgets_manager->register( new \Winegogh_Elementor_Custom_Meta_Or_Attribute_Widget() );
 }
 
 // Register custom category
