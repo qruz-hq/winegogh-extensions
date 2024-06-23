@@ -2,7 +2,7 @@
 /*
 Plugin Name: Winegogh Extensions
 Description: A plugin to help develop Winegogh
-Version: 1.0.4
+Version: 1.0.5
 Author: Gui Rodrigues
 GitHub Plugin URI: https://github.com/qruz-hq/winegogh-extensions
 GitHub Branch: main
@@ -20,7 +20,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-winegogh-extensions.php
 function register_new_widgets( $widgets_manager ) {
     require_once( __DIR__ . '/widgets/class-winegogh-elementor-price-widget.php' );
     $widgets_manager->register( new \Winegogh_Elementor_Price_Widget() );
-    
+
     require_once plugin_dir_path( __FILE__ ) . 'widgets/class-winegogh-elementor-fooevents-widget.php';
     $widgets_manager->register( new \Winegogh_Elementor_FooEvents_Widget() );
 }
