@@ -20,14 +20,19 @@ class Winegogh_Elementor_Price_Widget extends \Elementor\Widget_Base {
     protected function render() {
         global $product;
 
-        if ( !$product ) {
+        if ( ! $product ) {
             return;
         }
 
-        $price = $product->get_price_html();
+        // Get the regular price
+        $regular_price = $product->get_regular_price();
+
+        // Use the custom price formatting function
+        $extensions = new Winegogh_Extensions();
+        $formatted_price = $extensions->format_product_price( $regular_price );
 
         echo '<div class="wg-product-price">';
-        echo apply_filters( 'woocommerce_get_price_html', $price, $product );
+        echo $formatted_price;
         echo '</div>';
     }
 

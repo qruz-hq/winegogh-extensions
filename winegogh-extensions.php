@@ -22,6 +22,19 @@ function register_new_widgets( $widgets_manager ) {
     $widgets_manager->register( new \Winegogh_Elementor_Price_Widget() );
 }
 
+// Register custom category
+function add_custom_elementor_widget_categories( $elements_manager ) {
+    $elements_manager->add_category(
+        'winegogh-category',
+        [
+            'title' => __( 'Winegogh Widgets', 'winegogh-extensions' ),
+            'icon' => 'fa fa-plug',
+        ]
+    );
+}
+
+add_action( 'elementor/elements/categories_registered', 'add_custom_elementor_widget_categories' );
+
 add_action( 'elementor/widgets/register', 'register_new_widgets' );
 
 add_action( 'plugins_loaded', 'winegogh_extensions_init' );

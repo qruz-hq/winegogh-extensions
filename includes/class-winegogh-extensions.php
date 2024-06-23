@@ -1,12 +1,11 @@
 <?php
 class Winegogh_Extensions {
     public function __construct() {
-        add_filter( 'woocommerce_get_price_html', array( $this, 'modify_product_price' ), 10, 2 );
     }
 
-    public function modify_product_price( $price, $product ) {
+    public function format_product_price( $price ) {
         // Get the regular price
-        $regular_price = $product->get_regular_price();
+        $regular_price = floatval($price);
 
         // Format the price: show decimals only if needed
         if ( strpos( $regular_price, '.' ) !== false ) {
