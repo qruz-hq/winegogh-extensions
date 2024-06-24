@@ -1,3 +1,24 @@
+jQuery(function (jQuery){
+        
+    $jQuery.datepicker.setDefaults({
+        closeText: 'Cerrar',
+        prevText: '< Ant',
+        nextText: 'Sig >',
+        currentText: 'Hoy',
+        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+            'Jul','Ago','Sep','Oct','Nov','Dic'],
+        dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    });
+})
 jQuery(document).ready(function($) {
     var availableDates = [];
 
@@ -33,7 +54,7 @@ jQuery(document).ready(function($) {
         });
    }
     
-        $.datepicker.regional['es'] = {
+        $.datepicker.setDefaults({
             closeText: 'Cerrar',
             prevText: '< Ant',
             nextText: 'Sig >',
@@ -46,18 +67,14 @@ jQuery(document).ready(function($) {
             dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
             dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
             weekHeader: 'Sm',
-            dateFormat: 'yy/mm/dd', // standard format for storing
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
             yearSuffix: ''
-        };
-        $.datepicker.setDefaults($.datepicker.regional['es']);
+        });
 
         $("#wg-filter-date").datepicker({
-            altField: "#wg-filter-date_display",
-            altFormat: "dd 'de' MM 'de' yy",
-            dateFormat: 'dd/mm/yy', // standard format for storing,
+            dateFormat: "dd 'de' MM 'de' yy", // standard format for storing,
             beforeShow: function(isnt, elem) {
                 setCalsClearButton(null,null,elem);
             },
