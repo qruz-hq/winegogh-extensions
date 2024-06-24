@@ -1,6 +1,5 @@
 jQuery(document).ready(function($) {
     var availableDates = [];
-    $.datepicker.setDefaults($.datepicker.regional['es']);
 
     var setCalsClearButton = function(year,month,elem){
 
@@ -33,13 +32,32 @@ jQuery(document).ready(function($) {
             btn.appendTo( buttonPane );
         });
    }
-        // Initialize date picker
-        $('#wg-filter-date').datepicker({
-            dateFormat: "dd/mm/yy",
-                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
-                dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-                dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+    
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '< Ant',
+            nextText: 'Sig >',
+            currentText: 'Hoy',
+            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+                'Jul','Ago','Sep','Oct','Nov','Dic'],
+            dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'yy/mm/dd', // standard format for storing
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        $("#wg-filter-date").datepicker({
+            altField: "#wg-filter-date_display",
+            altFormat: "dd 'de' MM 'de' yy",
+            dateFormat: 'dd/mm/yy', // standard format for storing,
             beforeShow: function(isnt, elem) {
                 setCalsClearButton(null,null,elem);
             },
@@ -51,7 +69,6 @@ jQuery(document).ready(function($) {
             minDate: 0,
             showButtonPanel: true,
         });
-    
     
         function fetchAvailableDates() {
             $.ajax({
