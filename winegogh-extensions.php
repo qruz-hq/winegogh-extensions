@@ -86,8 +86,11 @@ add_action('plugins_loaded', 'winegogh_extensions_init');
 
 // Filtering
 
+
+
 function winegogh_enqueue_scripts()
 {
+    // Enqueue the jQuery UI Datepicker
     wp_enqueue_script('jquery-ui-datepicker');
     wp_enqueue_script('winegogh-filter', plugin_dir_url(__FILE__) . 'assets/js/filter.js', ['jquery', 'jquery-ui-datepicker'], '1.0.0', true);
     wp_localize_script('winegogh-filter', 'winegogh', [
@@ -97,6 +100,22 @@ function winegogh_enqueue_scripts()
     wp_enqueue_style('jquery-ui-css', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
 }
 add_action('wp_enqueue_scripts', 'winegogh_enqueue_scripts');
+
+
+// Add defer attribute to the script
+function add_defer_attribute($tag, $handle) {
+    // List of scripts to defer
+    $scripts_to_defer = ['winegogh-filter'];
+
+    foreach($scripts_to_defer as $defer_script) {
+        if ($defer_script === $handle) {
+            return str_replace(' src', ' defer="defer" src', $tag);
+        }
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'add_defer_attribute', 10, 2);
 
 function winegogh_filter_products()
 {
