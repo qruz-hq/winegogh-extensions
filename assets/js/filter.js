@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
     var availableDates = [];
+    $.datepicker.setDefaults($.datepicker.regional['es']);
 
     var setCalsClearButton = function(year,month,elem){
 
@@ -34,6 +35,11 @@ jQuery(document).ready(function($) {
    }
         // Initialize date picker
         $('#wg-filter-date').datepicker({
+            dateFormat: "dd 'de' MM 'de' yy",
+                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+                dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
             beforeShow: function(isnt, elem) {
                 setCalsClearButton(null,null,elem);
             },
