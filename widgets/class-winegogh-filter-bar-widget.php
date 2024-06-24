@@ -92,7 +92,7 @@ class Winegogh_Filter_Bar_Widget extends \Elementor\Widget_Base
         $current_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : '';
 ?>
         <form class="wg-filter-bar" method="get">
-            <div class="wg-filter-category">
+            <label class="wg-filter-category">
                 <select name="category" id="wg-filter-category" class="wg-filter-category-select">
                     <option value=""  data-full="ALL" data-abbr="ALL"><?php _e('All', 'winegogh-extensions'); ?></option>
                     <?php foreach ($settings['categories'] as $category) : ?>
@@ -102,7 +102,7 @@ class Winegogh_Filter_Bar_Widget extends \Elementor\Widget_Base
                     <?php endforeach; ?>
                 </select>
                 <?php \Elementor\Icons_Manager::render_icon($settings['caret'], ['aria-hidden' => 'true']); ?>
-            </div>
+            </label>
             <div class="wg-filter-date">
                 <input type="text" name="event_date" id="wg-filter-date" placeholder=" " readonly value="<?php echo esc_attr($current_date); ?>">
                 <span class="wg-filter-date-label">Añadir Fecha</span>

@@ -156,7 +156,6 @@ function winegogh_filter_loop_grid_query( $query ) {
 
         if ( $event_date ) {
             $formatted_date = $event_date;
-            error_log('Formatted date:' . $formatted_date);
             $meta_query[] = [
                 'key' => 'WooCommerceEventsDate',
                 'value' => $formatted_date,
@@ -185,18 +184,25 @@ function winegogh_get_event_dates()
 {
     $dates = [];
 
+    $current_date = current_time('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
+
     $query = new WP_Query([
         'post_type' => 'product',
-        'meta_key' => 'WooCommerceEventsDate',
-        'meta_value' => '',
-        'meta_compare' => '!=',
         'posts_per_page' => -1,
+        'meta_query' => [
+
+            [
+                'key' => 'WooCommerceEventsDate',
+                'value' => '',
+                'compare' => '!=',
+            ]
+        ]
     ]);
 
     while ($query->have_posts()) {
         $query->the_post();
         $event_date = get_post_meta(get_the_ID(), 'WooCommerceEventsDate', true);
-        $formatted_date = winegogh_parse_date($event_date);
+        $formatted_date = winegogh_parse_date(strtolower($event_date), 'd-m-Y');
 
         if (!in_array($formatted_date, $dates)) {
             $dates[] = $formatted_date;
