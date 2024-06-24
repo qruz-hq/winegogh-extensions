@@ -1,17 +1,19 @@
-jQuery(function (jQuery){
-        
+jQuery(function (jQuery) {
+
     jQuery.datepicker.setDefaults({
         closeText: 'Cerrar',
         prevText: '< Ant',
         nextText: 'Sig >',
         currentText: 'Hoy',
-        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-            'Jul','Ago','Sep','Oct','Nov','Dic'],
-        dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
-        dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         weekHeader: 'Sm',
         firstDay: 1,
         isRTL: false,
@@ -19,93 +21,75 @@ jQuery(function (jQuery){
         yearSuffix: ''
     });
 })
-jQuery(document).ready(function($) {
+
+jQuery(document).ready(function ($) {
     var availableDates = [];
 
-    var setCalsClearButton = function(year,month,elem){
+    var setCalsClearButton = function (year, month, elem) {
 
-        var afterShow = function(){
+        var afterShow = function () {
             var d = new $.Deferred();
             var cnt = 0;
-            setTimeout(function(){
-                if(elem.dpDiv[0].style.display === "block"){
+            setTimeout(function () {
+                if (elem.dpDiv[0].style.display === "block") {
                     d.resolve();
                 }
-                if(cnt >= 500){
+                if (cnt >= 500) {
                     d.reject("datepicker show timeout");
                 }
                 cnt++;
-            },10);
+            }, 10);
             return d.promise();
         }();
 
-        afterShow.done(function(){
+        afterShow.done(function () {
 
-            // datepickerのz-indexを指定
             $('.ui-datepicker').css('z-index', 2000);
 
-            var buttonPane = $( elem ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
+            var buttonPane = $(elem).datepicker("widget").find(".ui-datepicker-buttonpane");
 
             var btn = $('<button class="ui-datepicker-current ui-state-default ui-priority-primary ui-corner-all" type="button">Clear</button>');
             btn.off("click").on("click", function () {
-                    $.datepicker._clearDate( elem.input[0] );
-                });
-            btn.appendTo( buttonPane );
-        });
-   }
-    
-        $.datepicker.setDefaults({
-            closeText: 'Cerrar',
-            prevText: '< Ant',
-            nextText: 'Sig >',
-            currentText: 'Hoy',
-            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-                'Jul','Ago','Sep','Oct','Nov','Dic'],
-            dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
-            dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
-            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-            weekHeader: 'Sm',
-            firstDay: 1,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-        });
-
-        $("#wg-filter-date").datepicker({
-            dateFormat: "dd 'de' MM 'de' yy", // standard format for storing,
-            beforeShow: function(isnt, elem) {
-                setCalsClearButton(null,null,elem);
-            },
-            onChangeMonthYear:setCalsClearButton,
-            beforeShowDay: function(date) {
-                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                return [availableDates.indexOf(string) != -1];
-            },
-            minDate: 0,
-            showButtonPanel: true,
-        });
-    
-        function fetchAvailableDates() {
-            $.ajax({
-                url: winegogh.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'get_event_dates'
-                },
-                success: function(response) {
-                    if (response) {
-                        availableDates = response;
-                        $('#wg-filter-date').datepicker('refresh');
-                    }
-                }
+                $.datepicker._clearDate(elem.input[0]);
             });
-        }
-    
-        fetchAvailableDates();
+            btn.appendTo(buttonPane);
+        });
+    }
 
-        
+
+    $("#wg-filter-date").datepicker({
+        dateFormat: "dd 'de' MM 'de' yy", // standard format for storing,
+        beforeShow: function (isnt, elem) {
+            setCalsClearButton(null, null, elem);
+        },
+        onChangeMonthYear: setCalsClearButton,
+        beforeShowDay: function (date) {
+            var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+            return [availableDates.indexOf(string) != -1];
+        },
+        minDate: 0,
+        showButtonPanel: true,
+    });
+
+    function fetchAvailableDates() {
+        $.ajax({
+            url: winegogh.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'get_event_dates'
+            },
+            success: function (response) {
+                if (response) {
+                    availableDates = response;
+                    $('#wg-filter-date').datepicker('refresh');
+                }
+            }
+        });
+    }
+
+    fetchAvailableDates();
+
+
     // Function to update URL parameters
     function updateUrlParameter(param, value) {
         var searchParams = new URLSearchParams(window.location.search);
@@ -129,7 +113,7 @@ jQuery(document).ready(function($) {
     }
 
     // Listen for the filter form submission
-    $('#wg-filter-category').on('change', function(event) {
+    $('#wg-filter-category').on('change', function (event) {
         event.preventDefault();
         submitSearch()
     });

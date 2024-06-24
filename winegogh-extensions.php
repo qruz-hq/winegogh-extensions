@@ -92,7 +92,7 @@ function winegogh_enqueue_scripts()
 {
     // Enqueue the jQuery UI Datepicker
     wp_enqueue_script('jquery-ui-datepicker');
-    wp_enqueue_script('winegogh-filter', plugin_dir_url(__FILE__) . 'assets/js/filter.js', ['jquery', 'jquery-ui-datepicker'], '1.0.0', true);
+    wp_enqueue_script('winegogh-filter', plugin_dir_url(__FILE__) . 'assets/js/filter.js', ['jquery', 'jquery-ui-datepicker']);
     wp_localize_script('winegogh-filter', 'winegogh', [
         'ajax_url' => admin_url('admin-ajax.php')
     ]);
