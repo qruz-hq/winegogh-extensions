@@ -101,6 +101,24 @@ function winegogh_enqueue_scripts()
 }
 add_action('wp_enqueue_scripts', 'winegogh_enqueue_scripts');
 
+function remove_inline_datepicker_defaults($tag, $handle) {
+    if ($handle === 'jquery-ui-datepicker') {
+        // Log the original tag for debugging
+        error_log('Original tag: ' . $tag);
+
+        // Remove the inline script associated with the handle
+        $pattern = '/<script\s+id="jquery-ui-datepicker-js-after".*?>.*?<\/script>/s';
+        $modified_tag = preg_replace($pattern, '', $tag);
+
+        // Log the modified tag for debugging
+        error_log('Modified tag: ' . $modified_tag);
+
+        return $modified_tag;
+    }
+    return $tag;
+}
+add_filter('script_loader_tag', 'remove_inline_datepicker_defaults', 10, 2);
+
 
 // Add defer attribute to the script
 function add_defer_attribute($tag, $handle) {
