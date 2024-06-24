@@ -64,8 +64,9 @@ jQuery(document).ready(function ($) {
         },
         onChangeMonthYear: setCalsClearButton,
         beforeShowDay: function (date) {
-            var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-            return [availableDates.indexOf(string) != -1];
+            if(new Date(date).getTime() <= Date.now()) return [false];
+            var string = jQuery.datepicker.formatDate("dd 'de' MM 'de' yy", date);
+            return [availableDates.indexOf(string.toUpperCase()) != -1];
         },
         minDate: 0,
         showButtonPanel: true,
@@ -80,7 +81,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 if (response) {
-                    availableDates = response;
+                    availableDates = response.map(s => s.toUpperCase());
                     $('#wg-filter-date').datepicker('refresh');
                 }
             }

@@ -135,52 +135,6 @@ function add_defer_attribute($tag, $handle) {
 }
 add_filter('script_loader_tag', 'add_defer_attribute', 10, 2);
 
-function winegogh_filter_products()
-{
-    $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
-    $event_date = isset($_POST['event_date']) ? sanitize_text_field($_POST['event_date']) : '';
-
-    $args = [
-        'post_type' => 'product',
-        'posts_per_page' => -1,
-    ];
-
-    if ($category) {
-        $args['tax_query'][] = [
-            [
-                'taxonomy' => 'product_cat',
-                'field' => 'slug',
-                'terms' => $category
-            ]
-        ];
-    }
-
-    if ($event_date) {
-        $formatted_date = winegogh_parse_date($event_date);
-        $args['meta_query'][] = [
-            'key' => 'WooCommerceEventsDate',
-            'value' => $formatted_date,
-            'compare' => '=',
-            'type' => 'DATE'
-        ];
-    }
-    $loop = new WP_Query($args);
-
-    ob_start();
-
-    while ($loop->have_posts()) : $loop->the_post();
-        wc_get_template_part('content', 'product');
-    endwhile;
-
-    wp_reset_postdata();
-
-    $products = ob_get_clean();
-
-    wp_send_json_success(['products' => $products]);
-}
-
-add_action('wp_ajax_winegogh_filter_products', 'winegogh_filter_products');
-add_action('wp_ajax_nopriv_winegogh_filter_products', 'winegogh_filter_products');
 
 // Modify post args for loop grid
 
@@ -201,11 +155,13 @@ function winegogh_filter_loop_grid_query( $query ) {
         }
 
         if ( $event_date ) {
-            $formatted_date = winegogh_parse_date( $event_date, 'F j, Y' );
+            $formatted_date = $event_date;
+            error_log('Formatted date:' . $formatted_date);
             $meta_query[] = [
                 'key' => 'WooCommerceEventsDate',
                 'value' => $formatted_date,
-                'compare' => '='
+                'compare' => '=',
+                'type' => 'CHAR' // Ensure comparison is done as a string
             ];
         }
 
