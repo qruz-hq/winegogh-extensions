@@ -1,6 +1,6 @@
 jQuery(function (jQuery){
         
-    $jQuery.datepicker.setDefaults({
+    jQuery.datepicker.setDefaults({
         closeText: 'Cerrar',
         prevText: '< Ant',
         nextText: 'Sig >',
