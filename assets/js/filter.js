@@ -64,9 +64,8 @@ jQuery(document).ready(function ($) {
         },
         onChangeMonthYear: setCalsClearButton,
         beforeShowDay: function (date) {
-            if(new Date(date).getTime() <= Date.now()) return [false];
+            if((new Date(date).getTime() + 1000*60*60*24) < Date.now()) return [false];
             var string = jQuery.datepicker.formatDate("dd-mm-yy", new Date(date));
-            console.log({string, date})
             return [availableDates.indexOf(string.toUpperCase()) != -1];
         },
         minDate: 0,
