@@ -125,3 +125,26 @@ jQuery(document).ready(function ($) {
     $('#wg-filter-category').val(urlParams.get('category'));
     $('#wg-filter-date').val(urlParams.get('event_date'));
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    function updateCategoryOptions() {
+        var select = document.getElementById('wg-filter-category');
+        var options = select.options;
+        var isMobile = window.innerWidth <= 752;
+
+        for (var i = 0; i < options.length; i++) {
+            var option = options[i];
+            if (isMobile) {
+                option.text = option.getAttribute('data-abbr');
+            } else {
+                option.text = option.getAttribute('data-full');
+            }
+        }
+    }
+
+    // Update options on page load
+    updateCategoryOptions();
+
+    // Update options on window resize
+    window.addEventListener('resize', updateCategoryOptions);
+});
