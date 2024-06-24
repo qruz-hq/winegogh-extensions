@@ -44,6 +44,18 @@ class Winegogh_Filter_Bar_Widget extends \Elementor\Widget_Base {
         );
 
         $this->add_control(
+            'caret',
+            [
+                'label' => __( 'Caret', 'winegogh-extensions' ),
+                'type' => \Elementor\Controls_Manager::ICONS,
+                'default' => [
+                    'value' => 'fas fa-caret-down',
+                    'library' => 'fa-solid',
+                ],
+            ]
+        );
+
+        $this->add_control(
             'categories',
             [
                 'label' => __( 'Categories', 'winegogh-extensions' ),
@@ -80,6 +92,7 @@ class Winegogh_Filter_Bar_Widget extends \Elementor\Widget_Base {
                         <option value="<?php echo esc_attr( $category ); ?>" <?php selected( $category, $current_category ); ?>><?php echo esc_html( ucwords( $category ) ); ?></option>
                     <?php endforeach; ?>
                 </select>
+                <?php  \Elementor\Icons_Manager::render_icon( $settings['caret'], [ 'aria-hidden' => 'true' ] ); ?>
             </div>
             <div class="wg-filter-date">
                 <input type="text" name="event_date" id="wg-filter-date" placeholder=" " readonly value="<?php echo esc_attr( $current_date ); ?>">
