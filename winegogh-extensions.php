@@ -101,7 +101,8 @@ function winegogh_enqueue_scripts()
 }
 add_action('wp_enqueue_scripts', 'winegogh_enqueue_scripts');
 
-function remove_inline_datepicker_defaults($tag, $handle) {
+function remove_inline_datepicker_defaults($tag, $handle)
+{
     if ($handle === 'jquery-ui-datepicker') {
         // Log the original tag for debugging
         error_log('Original tag: ' . $tag);
@@ -121,11 +122,12 @@ add_filter('script_loader_tag', 'remove_inline_datepicker_defaults', 10, 2);
 
 
 // Add defer attribute to the script
-function add_defer_attribute($tag, $handle) {
+function add_defer_attribute($tag, $handle)
+{
     // List of scripts to defer
     $scripts_to_defer = ['winegogh-filter'];
 
-    foreach($scripts_to_defer as $defer_script) {
+    foreach ($scripts_to_defer as $defer_script) {
         if ($defer_script === $handle) {
             return str_replace(' src', ' defer="defer" src', $tag);
         }
@@ -138,15 +140,16 @@ add_filter('script_loader_tag', 'add_defer_attribute', 10, 2);
 
 // Modify post args for loop grid
 
-function winegogh_filter_loop_grid_query( $query ) {
-    if ( ! is_admin() && ( isset( $_GET['category'] ) || isset( $_GET['event_date'] ) ) ) {
-        $category = isset( $_GET['category'] ) ? sanitize_text_field( $_GET['category'] ) : '';
-        $event_date = isset( $_GET['event_date'] ) ? sanitize_text_field( $_GET['event_date'] ) : '';
+function winegogh_filter_loop_grid_query($query)
+{
+    if (!is_admin() && (isset($_GET['category']) || isset($_GET['event_date']))) {
+        $category = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
+        $event_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : '';
 
         $tax_query = [];
         $meta_query = [];
 
-        if ( $category ) {
+        if ($category) {
             $tax_query[] = [
                 'taxonomy' => 'product_cat',
                 'field' => 'slug',
@@ -154,7 +157,7 @@ function winegogh_filter_loop_grid_query( $query ) {
             ];
         }
 
-        if ( $event_date ) {
+        if ($event_date) {
             $formatted_date = $event_date;
             $meta_query[] = [
                 'key' => 'WooCommerceEventsDate',
@@ -164,15 +167,16 @@ function winegogh_filter_loop_grid_query( $query ) {
             ];
         }
 
-        if ( ! empty( $tax_query ) ) {
-            $existing_tax_query = (array) $query->get( 'tax_query' );
-            $query->set( 'tax_query', array_merge( $existing_tax_query, $tax_query ) );
+        if (!empty($tax_query)) {
+            $existing_tax_query = (array) $query->get('tax_query');
+            $query->set('tax_query', array_merge($existing_tax_query, $tax_query));
         }
 
-        if ( ! empty( $meta_query ) ) {
-            $existing_meta_query = (array) $query->get( 'meta_query' );
-            $query->set( 'meta_query', array_merge( $existing_meta_query, $meta_query ) );
+        if (!empty($meta_query)) {
+            $existing_meta_query = (array) $query->get('meta_query');
+            $query->set('meta_query', array_merge($existing_meta_query, $meta_query));
         }
+
     }
 
     return $query;
@@ -184,8 +188,21 @@ function winegogh_get_event_dates()
 {
     $dates = [];
 
+    // Define a unique key for the transient
+    $transient_key = 'winegogh_event_dates';
+    $cached_dates = get_transient($transient_key);
+    if ($cached_dates !== false) {
+        wp_send_json_success(['dates' => $cached_dates]);
+        return;
+    }
+
     $current_date = current_time('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
 
+
+    if ($cached_products !== false) {
+        wp_send_json_success(['products' => $cached_products]);
+        return;
+    }
     $query = new WP_Query([
         'post_type' => 'product',
         'posts_per_page' => -1,
@@ -203,12 +220,18 @@ function winegogh_get_event_dates()
         $query->the_post();
         $event_date = get_post_meta(get_the_ID(), 'WooCommerceEventsDate', true);
         $formatted_date = winegogh_parse_date(strtolower($event_date), 'd-m-Y');
+        if ($formatted_date >= $current_date) {
 
-        if (!in_array($formatted_date, $dates)) {
-            $dates[] = $formatted_date;
+            if (!in_array($formatted_date, $dates)) {
+                $dates[] = $formatted_date;
+            }
         }
     }
+
     wp_reset_postdata();
+
+    // Cache the dates for 1 hour (3600 seconds)
+    set_transient($transient_key, $dates, 3600);
 
     wp_send_json($dates);
 }
