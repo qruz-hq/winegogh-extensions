@@ -192,17 +192,12 @@ function winegogh_get_event_dates()
     $transient_key = 'winegogh_event_dates';
     $cached_dates = get_transient($transient_key);
     if ($cached_dates !== false) {
-        wp_send_json_success(['dates' => $cached_dates]);
+        wp_send_json($cached_dates);
         return;
     }
 
     $current_date = current_time('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
 
-
-    if ($cached_products !== false) {
-        wp_send_json_success(['products' => $cached_products]);
-        return;
-    }
     $query = new WP_Query([
         'post_type' => 'product',
         'posts_per_page' => -1,
