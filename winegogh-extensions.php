@@ -189,14 +189,14 @@ function winegogh_get_event_dates()
     $dates = [];
 
     // Define a unique key for the transient
-    $transient_key = 'winegogh_event_dates';
+    $transient_key = 'winegogh_event_dates_upd_6';
     $cached_dates = get_transient($transient_key);
     if ($cached_dates !== false) {
         wp_send_json($cached_dates);
         return;
     }
 
-    $current_date = current_time('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
+    $current_date = current_time('d-m-Y');
 
     $query = new WP_Query([
         'post_type' => 'product',
@@ -215,8 +215,8 @@ function winegogh_get_event_dates()
         $query->the_post();
         $event_date = get_post_meta(get_the_ID(), 'WooCommerceEventsDate', true);
         $formatted_date = winegogh_parse_date(strtolower($event_date), 'd-m-Y');
-        if ($formatted_date >= $current_date) {
-
+        error_log('Date :'. $formatted_date . ' - Current : '. $current_date);
+        if (new DateTime($formatted_date) >= new DateTime($current_date)) {
             if (!in_array($formatted_date, $dates)) {
                 $dates[] = $formatted_date;
             }
